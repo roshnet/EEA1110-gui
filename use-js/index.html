@@ -16,11 +16,11 @@
 		<img src="" class="image" id="ques-img-1" />
 		<form action="" method="post">
 			<p class="high has-fields line">For impedance: </p>
-			Z<sub>1</sub> =	<input type="text" name="z1-real"/> + j<input type="text" name="z1-imag"> <br/>
-			Z<sub>2</sub> =	<input type="text" name="z2-real"/> + j<input type="text" name="z2-imag"> <br/>
-			Z<sub>3</sub> =	<input type="text" name="z3-real"/> + j<input type="text" name="z3-imag"> <br/>
+		Z<sub>1</sub> =	<input type="text" name="z1-real" onkeyup="isNum(this)"/> + j<input type="text" name="z1-imag" onkeyup="isNum(this)"> <br/>
+		Z<sub>2</sub> =	<input type="text" name="z2-real" onkeyup="isNum(this)"/> + j<input type="text" name="z2-imag" onkeyup="isNum(this)"/> <br/>
+		Z<sub>3</sub> =	<input type="text" name="z3-real"/> + j<input type="text" name="z3-imag"> <br/>
 			<p>with supply voltage </p>
-			V<sub>1</sub> = <input type="text" name="supply-volt">V<br/>
+			V<sub>1</sub> = <input type="text" name="supply-volt" onkeyup="isNum(this)">V<br/>
 		</form>
 	</div>
 
@@ -29,11 +29,11 @@
 		<div id="output">
 			<p class="line high">The Thevenin Voltage would be:</p>
 			<p class="has-fields line">
-V<sub>th</sub> = e = <input type="text" name="vth-polar-re" contenteditable="false"/> + j<input type="text" name="vth-polar-im" contenteditable="false"/>
+V<sub>th</sub> = e = <input type="text" name="vth-polar-re" readonly="readonly"/> + j<input type="text" name="vth-polar-im" readonly="readonly"/>
 			</p>
 
 			<p class="has-fields line">
-V<sub>th</sub> = e = <input type="text" name="vth-polar-mag" contenteditable="false">V at <input type="text" name="vth-polar-deg" contenteditable="false"> degrees.
+V<sub>th</sub> = e = <input type="text" name="vth-polar-mag" readonly="readonly"/>V at <input type="text" name="vth-polar-deg" readonly="readonly"> degrees.
 			</p>
 
 			<p class="line high">
@@ -41,17 +41,16 @@ V<sub>th</sub> = e = <input type="text" name="vth-polar-mag" contenteditable="fa
 			</p>
 
 			<p class="has-fields line">
-Z<sub>Th</sub> = <input type="text" name="zth-polar-re" contenteditable="false"> + j<input type="text" name="zth-polar-im" contenteditable="false">
+Z<sub>Th</sub> = <input type="text" name="zth-polar-re" readonly="readonly"/> + j<input type="text" name="zth-polar-im" readonly="readonly"/>
 			</p>
 
 			<p class="has-fields line">
-Z<sub>Th</sub> = <input type="text" name="zth-polar-mag" contenteditable="false"> ohms at <input type="text" name="zth-polar-im" contenteditable="false"> degrees.
+Z<sub>Th</sub> = <input type="text" name="zth-polar-mag" readonly="readonly"/> ohms at <input type="text" name="zth-polar-im" readonly="readonly"/> degrees.
 			</p>
 
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="main.js" async="async"></script>
-<!-- <script type="text/javascript" src="jquery-3.3.1-min.js"></script> -->
+<script type="text/javascript" src="vanilla.js" async="async"></script>
 </body>
 </html>
