@@ -1,0 +1,15 @@
+html{font-size: 16px;}
+
+#web-ui{
+	width: 100%;
+	padding: 1%;
+	margin: 3% 3%;
+}
+
+header{background-color: #ccccff;padding: 3%;font-size: 150%;}
+
+/*.line{margin: 2% 2%;}*/
+
+input{margin: 2%;width: 40px;}
+
+.has-fields{margin-top: 4%;}
