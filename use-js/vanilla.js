@@ -1,38 +1,35 @@
 
+// Global variables..
+var z1_re = document.querySelector('[name="z1-real"]');
+var z1_im = document.querySelector('[name="z1-imag"]');
+var z2_re = document.querySelector('[name="z2-real"]');
+var z2_im = document.querySelector('[name="z2-imag"]');
+var z3_re = document.querySelector('[name="z3-real"]');
+var z3_im = document.querySelector('[name="z3-imag"]');
 
-var z1 = z2 = z3 = [];
-z1.push(document.querySelector('[name="z1-real"]'));
-z1.push(document.querySelector('[name="z1-imag"]'));
-z2.push(document.querySelector('[name="z2-real"]'));
-z2.push(document.querySelector('[name="z2-imag"]'));
-z3.push(document.querySelector('[name="z3-real"]'));
-z3.push(document.querySelector('[name="z3-imag"]'));
-
-// Real and imaginary parts of any impedance variable can be accessed by index 0 and 1 respectively.
-// Hence, z1[0] refers to real part of z1, and z1[1] refers to its imaginary part.
-// Same applies for 'z2' and 'z3'.
-
-
-function isNum(key){
-	if (isNaN(key.value) && key.value != '.'){
-		alert("Only numbers allowed as input!");
-		key.value = null;
-	}
-}
+// Shorthand variables..
+var a1 = z1_re;
+var b1 = z1_im;
+var a2 = z2_re;
+var b2 = z2_im;
+var a3 = z3_re;
+var b3 = z3_im;
 
 
+// Logic for Thevenin's Impedance..
+
+var zth_re_nr = ((a1*a3) - (b1*b3))*(a1+a3) + (b1+b3)*((a1*b3)+(a3*b1)) ;
+
+var zth_dr = (a1+a3)*(a1+a3) + (b1+b3)*(b1+b3) ;
+
+var zth_im_nr = (((a1*b3)+(a3*b1))*(a1+a3)) - ((b1+b3)*((a1*a3)-(b1*b3)))
+var zth_re = (zth_re_nr / zth_dr) + a2 ;
+var zth_im = (zth_im_nr / zth_dr) + b2 ;
+
+var zth_mag = Math.sqrt((zth_re*zth_re) + (zth_im*zth_im));
+var zth_angle = (Math.atan(zth_im / zth_re)) * 180/ 3.14 ; // converted to degrees..
 
 
-function appLogic() {
-	// yet to build.
-	return;
-}
+// Logic for Thevenin's voltage..
 
-/*
-=================
-DOCSTRINGS
-==================
-After filling out the last field, a function is called to check if all previous fields have been filled or not.
-If they have been, then the calculated values can be inserted (to view as result) into the readonly fields.
-
-*/
+var 
