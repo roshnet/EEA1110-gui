@@ -4,7 +4,22 @@
 	<title>Interface | Thevenin's Network</title>
 	<meta charset="utf-8"/>
 	<meta name="description" content="Web interface to solve a Thevenin's network problem"/>
-	<link rel="stylesheet" type="text/css" href="styler.css"/>
+	<style type="text/css">
+		html{font-size: 16px;}
+		#web-ui{
+			width: 100%;
+			padding: 1% 1%;
+			margin-left: auto;
+			margin-right: auto;
+			max-width: 960px;
+			width: 100%;
+		}
+		#output-space{
+			margin-top: 5%;
+		}
+		#output-space input {width: 140px;}
+		input{width: 60px;}
+	</style>
 </head>
 <body>
 
@@ -20,7 +35,7 @@
 		Z<sub>2</sub> =	<input type="text" name="z2-real" onkeyup="isNum(this)"/> + j<input type="text" name="z2-imag" onkeyup="isNum(this)"/> <br/>
 		Z<sub>3</sub> =	<input type="text" name="z3-real"/> + j<input type="text" name="z3-imag"> <br/>
 			<p>with supply voltage </p>
-			V<sub>1</sub> = <input type="text" name="supply-volt" onkeyup="isNum(this)">V<br/>
+			V<sub>1</sub> = <input type="text" name="volt-real" onkeyup="isNum(this)"> +j<input type="text" name="volt-imag">V<br/>
 		</form>
 	</div>
 
@@ -31,9 +46,11 @@
 	<div id="output-space">
 		<img src="" class="image" id="ques-img-2"/>
 		<div id="output">
-			<p class="line high">The Thevenin Voltage would be:</p>
+			<p class="line high">
+				The Thevenin Voltage would be:
+			</p>
 			<p class="has-fields line">
-V<sub>th</sub> = e = <input type="text" name="vth-polar-re" /> + j<input type="text" name="vth-polar-im" readonly="readonly"/>
+V<sub>th</sub> = e = <input type="text" name="vth-polar-re" readonly="readonly" /> + j<input type="text" name="vth-polar-im" readonly="readonly"/>
 			</p>
 
 			<p class="has-fields line">
@@ -49,12 +66,86 @@ Z<sub>Th</sub> = <input type="text" name="zth-polar-re" readonly="readonly"/> + 
 			</p>
 
 			<p class="has-fields line">
-Z<sub>Th</sub> = <input type="text" name="zth-polar-mag" readonly="readonly"/> ohms at <input type="text" name="zth-polar-im" readonly="readonly"/> degrees.
+Z<sub>Th</sub> = <input type="text" name="zth-polar-mag" readonly="readonly"/> ohms at <input type="text" name="zth-polar-deg" readonly="readonly"/> degrees.
 			</p>
 
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="vanilla.js" async="async"></script>
 </body>
 </html>
+<script type="text/javascript">
+
+// isNum() checks and alerts (and resets value) if entered value is not a number..
+function isNum(key){
+	if (isNaN(key.value) && key.value != '.'){
+		alert("Only numbers allowed as input!");
+		key.value = null;
+	}
+}
+
+
+// addAnswer() inserts value in a DOM element searched by name=`elementName`..
+function addAnswer(elementName, value){
+	document.querySelector('[name="' + elementName + '"]').value = value;
+}
+
+
+function calculate(){
+	// Locally global variables..
+	var z1_re = document.querySelector('[name="z1-real"]').value;
+	var z1_im = document.querySelector('[name="z1-imag"]').value;
+	var z2_re = document.querySelector('[name="z2-real"]').value;
+	var z2_im = document.querySelector('[name="z2-imag"]').value;
+	var z3_re = document.querySelector('[name="z3-real"]').value;
+	var z3_im = document.querySelector('[name="z3-imag"]').value;
+	var supply_volt_re = document.querySelector('[name="volt-real"]').value;
+	var supply_volt_im = document.querySelector('[name="volt-imag"]').value;
+
+	// Shorthand variables..
+	var a1 = parseFloat(z1_re);
+	var b1 = parseFloat(z1_im);
+	var a2 = parseFloat(z2_re);
+	var b2 = parseFloat(z2_im);
+	var a3 = parseFloat(z3_re);
+	var b3 = parseFloat(z3_im);
+	var vr = parseFloat(supply_volt_re);
+	var vi = parseFloat(supply_volt_im);
+
+
+	// Logic for Thevenin's Impedance..
+	var zth_re_nr = ((a1*a3) - (b1*b3))*(a1+a3) + (b1+b3)*((a1*b3)+(a3*b1));
+	var zth_im_nr = (((a1*b3)+(a3*b1))*(a1+a3)) - ((b1+b3)*((a1*a3)-(b1*b3)));
+	var zth_dr = (a1+a3)*(a1+a3) + (b1+b3)*(b1+b3);
+		// Hence:
+	var zth_re = parseFloat((zth_re_nr / zth_dr) + a2);
+	var zth_im = parseFloat((zth_im_nr / zth_dr) + b2);
+	var zth_mag = parseFloat(Math.sqrt((zth_re*zth_re) + (zth_im*zth_im)));
+	var zth_angle = (Math.atan(zth_im / zth_re)) * 180 / 3.14 ; // converted to degrees..
+
+
+	// Logic for Thevenin's voltage..
+	var vth_re_nr = ((vr*a3)-(vi*b3))*(a1+a3) + ((vr*b3)+(vi*a3))*(b1+b3);			;
+	// var vth_dr = (a+e)*(a+e) + (b+f)*(b+f);
+	var vth_dr = (a1+a3)*(a1+a3) + (b1+b3)*(b1+b3);
+	var vth_im_nr = ((vr*b3)+(vi*a3))*(a1+a3) - ((vr*a3)-(vi*b3))*(b1+b3);
+		// Hence:
+	var vth_re = parseFloat(vth_re_nr / vth_dr);
+	var vth_im = parseFloat(vth_im_nr / vth_dr);
+	var vth_mag = parseFloat(Math.sqrt((vth_re*vth_re) + (vth_im*vth_im)));
+	var vth_angle = (Math.atan(vth_im / vth_re)) * 180 / 3.14;
+
+
+	// Now inserting values in placeholders..
+	addAnswer('vth-polar-re', vth_re);
+	addAnswer('vth-polar-im', vth_im);
+	addAnswer('vth-polar-mag', vth_mag);
+	addAnswer('vth-polar-deg', vth_angle);
+	addAnswer('zth-polar-re', zth_re);
+	addAnswer('zth-polar-im', zth_im);
+	addAnswer('zth-polar-mag', zth_mag);
+	addAnswer('zth-polar-deg', zth_angle);
+}
+
+
+</script>
